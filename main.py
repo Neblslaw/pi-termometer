@@ -1,3 +1,4 @@
+import datetime
 import time
 
 from SGP30 import SGP30
@@ -27,6 +28,8 @@ if __name__ == "__main__":
     print("Rozpoczynanie pomiarów (czujnik stabilizuje się przez pierwsze 15s)...")
 
     while True:
+        print(datetime.datetime.now())
+
         eco2, tvoc = sgp30.read_data()
         print(f"eCO2: {eco2} ppm | TVOC: {tvoc} ppb")
 
