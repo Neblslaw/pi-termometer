@@ -3,6 +3,7 @@ import time
 from SGP30 import SGP30
 from SHT31 import SHT31
 from mqtt import MQTTClient
+import json
 
 import smbus2
 
@@ -32,8 +33,14 @@ if __name__ == "__main__":
         celsius, humidity = sht31.read_data()
         print(f"temp: {celsius} C | humidity: {humidity} %")
 
-        client.publish("sgp30",f"eCO2: {eco2} ppm | TVOC: {tvoc} ppb")
-        client.publish("sht31",f"temp: {celsius} C | humidity: {humidity} %")
+        data = {
+            "eCO2": eco2,
+            "TVOC": tvoc,
+            "temp": celsius,
+            "humidity": humidity
+        }
+
+        client.publish("building/conference_room_1/air", json.dumps(data))
 
         # WAŻNE: Specyfikacja Sensirion wymaga wywoływania pomiaru
         # dokładnie co 1 sekundę, aby wewnętrzny algorytm kalibracji działał poprawnie.
