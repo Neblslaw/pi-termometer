@@ -2,8 +2,12 @@ import time
 
 from test44 import read_sht31
 from test58 import init_sgp30, read_sgp30
+from mqtt import MQTTClient
 
 if __name__ == "__main__":
+    print("Łączenie do broakera mqtt")
+    client = MQTTClient()
+
     print("Inicjalizacja czujnika SGP30...")
     init_sgp30()
 
@@ -18,6 +22,8 @@ if __name__ == "__main__":
         celsius, humidity = read_sht31()
         print(f"temp: {celsius} C | humidity: {humidity} %")
 
+        client.publish("sgp30",f"eCO2: {eco2} ppm | TVOC: {tvoc} ppb")
+        client.publish("sht31",f"temp: {celsius} C | humidity: {humidity} %")
 
         # WAŻNE: Specyfikacja Sensirion wymaga wywoływania pomiaru
         # dokładnie co 1 sekundę, aby wewnętrzny algorytm kalibracji działał poprawnie.
