@@ -23,7 +23,7 @@ class SGP30:
         self._write_command(Command.Measure_air_quality)
 
         # Odczekaj wymagany czas na przetworzenie pomiaru przez czujnik (ok. 12 ms)
-        time.sleep(0.12)
+        time.sleep(0.5)
 
         # Odczytaj 6 bajtów:
         # [eCO2 MSB, eCO2 LSB, eCO2 CRC, TVOC MSB, TVOC LSB, TVOC CRC]
@@ -31,7 +31,7 @@ class SGP30:
 
         tvoc, eco2 = (0, 0)
         # Konwersja eCO2 (bajt 0 i 1)
-        if not is_crc_valid(data[0:3]):
+        if is_crc_valid(data[0:3]):
             eco2 = data[0] * 256 + data[1]
         else:
             logging.warning("CRC error")
