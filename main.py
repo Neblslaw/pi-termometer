@@ -35,6 +35,7 @@ if __name__ == "__main__":
     red.off()
 
     while True:
+        next_reading = time.time()
         eco2, tvoc = sgp30.read_data()
         print(f"eCO2: {eco2} ppm | TVOC: {tvoc} ppb")
 
@@ -56,8 +57,12 @@ if __name__ == "__main__":
         else:
             green.on()
             red.off()
-        # WAŻNE: Specyfikacja Sensirion wymaga wywoływania pomiaru
-        # dokładnie co 1 sekundę, aby wewnętrzny algorytm kalibracji działał poprawnie.
-        time.sleep(1.0)
+
+        # Calculate how much time is left until the next reading
+        sleep_time = next_reading - time.time()
+
+        # Sleep only if we haven't already passed the target time
+        if sleep_time > 0:
+            time.sleep(sleep_time)
 
 
