@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 
-HOST = "localhost"
+HOST = "192.168.88.250"
 PORT = 1883
 
 class MQTTClient:
