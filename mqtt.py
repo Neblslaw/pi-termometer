@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 
-HOST = "192.168.88.250"
-PORT = 1883
+HOST = "192.168.100.13"
+PORT = 20183
 
 class MQTTClient:
     def __init__(self):

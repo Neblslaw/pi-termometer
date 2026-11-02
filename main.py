@@ -16,6 +16,7 @@ red = LED(19)
 if __name__ == "__main__":
     green.on()
     red.on()
+    reading_count = 0
     print("Łączenie do broakera mqtt")
     client = MQTTClient()
 
@@ -35,21 +36,24 @@ if __name__ == "__main__":
     red.off()
 
     while True:
-        next_reading = time.time()
+        next_reading = time.time() + 1
         eco2, tvoc = sgp30.read_data()
         print(f"eCO2: {eco2} ppm | TVOC: {tvoc} ppb")
 
         celsius, humidity = sht31.read_data()
         print(f"temp: {celsius} C | humidity: {humidity} %")
 
-        data = {
-            "eCO2": eco2,
-            "TVOC": tvoc,
-            "temp": celsius,
-            "humidity": humidity
-        }
+        reading_count = reading_count + 1
+        if reading_count == 15:
+            reading_count = 0
+            data = {
+                "eCO2": eco2,
+                "TVOC": tvoc,
+                "temp": celsius,
+                "humidity": humidity
+            }
 
-        client.publish("building/conference_room_1/air", json.dumps(data))
+            client.publish("team2/building/conference_room_1/air", json.dumps(data))
 
         if eco2 >= 1000:
             green.off()
