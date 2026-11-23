@@ -30,7 +30,7 @@ try:
     epd = epd3in0g.EPD()   
     epd.init()
     epd.Clear()
-    font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
+    font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 40)
 
     draw('hello world')
 
