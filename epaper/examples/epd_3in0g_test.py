@@ -17,30 +17,33 @@ from PIL import Image,ImageDraw,ImageFont
 logging.basicConfig(level=logging.DEBUG)
 
 
-def draw(text):
-    # Drawing on the image
-    epd.init()
-    Himage = Image.new('RGB', (epd.width, epd.height), epd.BLACK)
-    draw = ImageDraw.Draw(Himage)
-    draw.text((5, 0), text, font=font24, fill='#9f06a6')
-    epd.display(epd.getbuffer(Himage))
-    time.sleep(30)
+class Screen:
+    def __init__(self):
+        self.epd = epd3in0g.EPD()
+        self.epd.init()
+        self.epd.Clear()
+        self.font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
+
+    def clear(self):
+        self.epd.init()
+        self.epd.Clear()
+
+    def exit(self):
+        self.epd.Clear()
+        self.epd.sleep()
+
+    def draw(self, text):
+        self.epd.init()
+        Himage = Image.new('RGB', (self.epd.width, self.epd.height), self.epd.BLACK)
+        draw = ImageDraw.Draw(Himage)
+        draw.text((5, 0), text, font=self.font, fill=self.epd.WHITE)
+        self.epd.display(self.epd.getbuffer(Himage))
 
 try:
-    epd = epd3in0g.EPD()   
-    epd.init()
-    epd.Clear()
-    font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 40)
-
-    draw('hello world')
-
-
-    epd.init()
-    logging.info("Clear...")
-    epd.Clear()
-    
-    logging.info("Goto Sleep...")
-    epd.sleep()
+   screen = Screen()
+   screen.draw("hello world")
+   time.sleep(30)
+   screen.exit()
         
 except IOError as e:
     logging.info(e)
