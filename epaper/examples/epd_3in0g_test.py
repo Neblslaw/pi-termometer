@@ -35,9 +35,9 @@ class Screen:
 
     def draw(self, data):
         self.epd.init()
-        width, height = self.epd.width, self.epd.height
+        # Swap dimensions to draw along the 400px axis
+        width, height = self.epd.height, self.epd.width
 
-        # White background
         Himage = Image.new('RGB', (width, height), self.epd.WHITE)
         draw = ImageDraw.Draw(Himage)
 
@@ -48,44 +48,31 @@ class Screen:
             ("Humidity", f"{data['humidity']:.1f} %"),
         ]
 
-        margin = 8
+        margin = 6
         row_height = (height - 2 * margin) // len(rows)
         table_top = margin
         table_bottom = table_top + row_height * len(rows)
         table_left = margin
         table_right = width - margin
-        col_split = int(width * 0.48)
+        col_split = int(width * 0.45)
 
-        # Outer border and vertical column divider
-        draw.rectangle(
-            [(table_left, table_top), (table_right, table_bottom)],
-            outline=self.epd.BLACK,
-            width=2,
-        )
-        draw.line(
-            [(col_split, table_top), (col_split, table_bottom)],
-            fill=self.epd.BLACK,
-            width=2,
-        )
+        draw.rectangle([(table_left, table_top), (table_right, table_bottom)], outline=self.epd.BLACK, width=2)
+        draw.line([(col_split, table_top), (col_split, table_bottom)], fill=self.epd.BLACK, width=2)
 
         for idx, (label, value) in enumerate(rows):
             y_top = table_top + idx * row_height
-
-            # Horizontal row divider
             if idx > 0:
-                draw.line(
-                    [(table_left, y_top), (table_right, y_top)],
-                    fill=self.epd.BLACK,
-                    width=1,
-                )
+                draw.line([(table_left, y_top), (table_right, y_top)], fill=self.epd.BLACK, width=1)
 
-            # Center text vertically in each cell
             bbox = draw.textbbox((0, 0), label, font=self.font)
             text_height = bbox[3] - bbox[1]
             text_y = y_top + (row_height - text_height) // 2 - bbox[1]
 
-            draw.text((table_left + 8, text_y), label, font=self.font, fill=self.epd.BLACK)
-            draw.text((col_split + 8, text_y), value, font=self.font, fill=self.epd.BLACK)
+            draw.text((table_left + 10, text_y), label, font=self.font, fill=self.epd.BLACK)
+            draw.text((col_split + 10, text_y), value, font=self.font, fill=self.epd.BLACK)
+
+        # Rotate back to native 168x400 (use 270 instead of 90 if upside-down)
+        Himage = Himage.rotate(90, expand=True)
 
         self.epd.display(self.epd.getbuffer(Himage))
         self.epd.sleep()
