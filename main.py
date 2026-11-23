@@ -65,7 +65,7 @@ if __name__ == "__main__":
                 green.on()
                 red.off()
 
-            if reading_count % 3000:
+            if reading_count % 3000 == 0:
                 data = {
                     "eCO2": eco2,
                     "TVOC": tvoc,
