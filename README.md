@@ -15,7 +15,7 @@ scp -r . pi@<raspberry-pi-ip>:~/mikulska
 ```bash
 cd ~/Desktop/mikulska
 python3 -m venv --system-site-packages venv
-source .venv/bin/activate
-pip install paho-mqtt smbus2 gpiozero python3-pil
+source venv/bin/activate
+pip install paho-mqtt smbus2 gpiozero pillow
 python main.py
 ```
