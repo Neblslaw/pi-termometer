@@ -18,13 +18,17 @@ try:
     epd.init()
     epd.Clear()
     font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
-    
+
+    print("witamy")
     # Drawing on the image
     Himage = Image.new('RGB', (epd.width, epd.height), epd.WHITE)
     draw = ImageDraw.Draw(Himage)
-    draw.text((50, 0), 'hello world', font = font24, fill = epd.RED)
+    draw.text((5, 0), 'hello world', font = font24, fill = epd.RED)
     epd.display(epd.getbuffer(Himage))
+    print("witamy")
+
     time.sleep(30)
+    print("witamy")
 
     epd.Clear()
     
