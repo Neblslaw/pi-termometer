@@ -76,24 +76,3 @@ class Screen:
 
         self.epd.display(self.epd.getbuffer(Himage))
         self.epd.sleep()
-
-try:
-   screen = Screen()
-   data = {
-       "eCO2": 1000,
-       "TVOC": 1234,
-       "temp": 15,
-       "humidity": 97
-   }
-   screen.draw(data)
-
-   time.sleep(30)
-   screen.exit()
-        
-except IOError as e:
-    logging.info(e)
-    
-except KeyboardInterrupt:    
-    logging.info("ctrl + c:")
-    epd3in0g.epdconfig.module_exit(cleanup=True)
-    exit()
