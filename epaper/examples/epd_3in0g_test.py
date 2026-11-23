@@ -37,6 +37,7 @@ class Screen:
         Himage = Image.new('RGB', (self.epd.width, self.epd.height), self.epd.BLACK)
         draw = ImageDraw.Draw(Himage)
         draw.text((5, 0), text, font=self.font, fill=self.epd.WHITE)
+        draw.text((5, 25), text, font=self.font, fill=self.epd.WHITE)
         self.epd.display(self.epd.getbuffer(Himage))
 
 try:
