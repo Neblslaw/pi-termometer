@@ -20,7 +20,7 @@ logging.basicConfig(level=logging.DEBUG)
 def draw(text):
     # Drawing on the image
     epd.init()
-    Himage = Image.new('RGB', (epd.width, epd.height), epd.WHITE)
+    Himage = Image.new('RGB', (epd.width, epd.height), epd.BLACK)
     draw = ImageDraw.Draw(Himage)
     draw.text((5, 0), text, font=font24, fill='#9f06a6')
     epd.display(epd.getbuffer(Himage))
