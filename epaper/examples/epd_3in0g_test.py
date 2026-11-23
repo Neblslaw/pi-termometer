@@ -35,7 +35,7 @@ try:
     draw.line((5, 170, 80, 245), fill = epd.RED)
     draw.line((80, 170, 5, 245), fill = epd.YELLOW)
     epd.display(epd.getbuffer(Himage))
-    time.sleep(3)
+    time.sleep(30)
 
 
     epd.init()
