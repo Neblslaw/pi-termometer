@@ -2,6 +2,8 @@
 # -*- coding:utf-8 -*-
 import sys
 import os
+from pydoc import text
+
 picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
 libdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'lib')
 if os.path.exists(libdir):
@@ -14,19 +16,23 @@ from PIL import Image,ImageDraw,ImageFont
 
 logging.basicConfig(level=logging.DEBUG)
 
+
+def draw(text):
+    # Drawing on the image
+    epd.init()
+    Himage = Image.new('RGB', (epd.width, epd.height), epd.WHITE)
+    draw = ImageDraw.Draw(Himage)
+    draw.text((5, 0), text, font=font24, fill='#9f06a6')
+    epd.display(epd.getbuffer(Himage))
+    time.sleep(30)
+
 try:
     epd = epd3in0g.EPD()   
     epd.init()
     epd.Clear()
     font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
 
-    # Drawing on the image
-    epd.init()
-    Himage = Image.new('RGB', (epd.width, epd.height), epd.WHITE)
-    draw = ImageDraw.Draw(Himage)
-    draw.text((5, 0), 'hello world', font = font24, fill = epd.RED)
-    epd.display(epd.getbuffer(Himage))
-    time.sleep(30)
+    draw('hello world')
 
 
     epd.init()
